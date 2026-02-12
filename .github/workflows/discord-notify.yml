@@ -11,18 +11,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send Discord Notification
-        if: always() # Ensures notification sends on failure too!
+        if: always()
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-          # Mapping data to Envs to avoid shell escaping issues
-          MESSAGE: ${{ github.event.head_commit.message || github.event.pull_request.title }}
+          # These are passed as env vars for jq to pick up safely
+          MSG: ${{ github.event.head_commit.message || github.event.pull_request.title }}
           URL: ${{ github.event.head_commit.url || github.event.pull_request.html_url }}
           STATUS: ${{ job.status }}
           REPO: ${{ github.repository }}
           BRANCH: ${{ github.ref_name }}
           AUTHOR: ${{ github.actor }}
+          EVENT: ${{ github.event_name }}
         run: |
-          # Set UI details based on status
+          # 1. Determine Color and Emoji
           if [ "$STATUS" = "success" ]; then
             COLOR=3066993
             EMOJI="✅"
@@ -31,29 +32,39 @@ jobs:
             EMOJI="❌"
           fi
 
-          # Construct the JSON using a Heredoc for better readability
-          curl -H "Content-Type: application/json" \
-               -X POST \
-               -d @- <<EOF
-          {
-            "username": "GitHub",
-            "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-            "embeds": [{
-              "title": "$EMOJI Workflow $STATUS",
-              "url": "$URL",
-              "color": $COLOR,
-              "author": {
-                "name": "$AUTHOR",
-                "icon_url": "https://github.com/$AUTHOR.png"
-              },
-              "fields": [
-                { "name": "Repository", "value": "[$REPO](https://github.com/$REPO)", "inline": true },
-                { "name": "Branch", "value": "\`$BRANCH\`", "inline": true },
-                { "name": "Event", "value": "${{ github.event_name }}", "inline": true },
-                { "name": "Message", "value": "$MESSAGE", "inline": false }
-              ],
-              "timestamp": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')",
-              "footer": { "text": "GitHub Actions" }
-            }]
-          }
-          EOF
+          # 2. Use jq to build the JSON safely (handles quotes/special chars)
+          JSON_PAYLOAD=$(jq -n \
+            --arg user "$AUTHOR" \
+            --arg avatar "https://github.com/$AUTHOR.png" \
+            --arg title "$EMOJI Workflow $STATUS" \
+            --arg url "$URL" \
+            --arg color "$COLOR" \
+            --arg repo "$REPO" \
+            --arg branch "$BRANCH" \
+            --arg event "$EVENT" \
+            --arg msg "$MSG" \
+            --arg timestamp "$(date -u +'%Y-%m-%dT%H:%M:%SZ')" \
+            '{
+              username: "GitHub",
+              avatar_url: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+              embeds: [{
+                title: $title,
+                url: $url,
+                color: ($color | tonumber),
+                author: {
+                  name: $user,
+                  icon_url: $avatar
+                },
+                fields: [
+                  { name: "Repository", value: ("[" + $repo + "](https://github.com/" + $repo + ")"), inline: true },
+                  { name: "Branch", value: ("`" + $branch + "`"), inline: true },
+                  { name: "Event", value: $event, inline: true },
+                  { name: "Message", value: $msg, inline: false }
+                ],
+                timestamp: $timestamp,
+                footer: { text: "GitHub Actions" }
+              }]
+            }')
+
+          # 3. Send it
+          curl -H "Content-Type: application/json" -X POST -d "$JSON_PAYLOAD" "$DISCORD_WEBHOOK"
