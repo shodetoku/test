@@ -2,74 +2,58 @@ name: Discord GitHub Notifications
 
 on:
   push:
-    branches:
-      - "**"
+    branches: ["**"]
   pull_request:
     types: [opened, synchronize, reopened, closed]
 
 jobs:
   notify:
     runs-on: ubuntu-latest
-
     steps:
       - name: Send Discord Notification
+        if: always() # Ensures notification sends on failure too!
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          # Mapping data to Envs to avoid shell escaping issues
+          MESSAGE: ${{ github.event.head_commit.message || github.event.pull_request.title }}
+          URL: ${{ github.event.head_commit.url || github.event.pull_request.html_url }}
+          STATUS: ${{ job.status }}
+          REPO: ${{ github.repository }}
+          BRANCH: ${{ github.ref_name }}
+          AUTHOR: ${{ github.actor }}
         run: |
-          EVENT_NAME="${{ github.event_name }}"
-          ACTOR="${{ github.actor }}"
-          AVATAR_URL="https://github.com/${{ github.actor }}.png"
-          REPO="${{ github.repository }}"
-          BRANCH="${{ github.ref_name }}"
-          TIME_ISO="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
-
-          STATUS="${{ job.status }}"
+          # Set UI details based on status
           if [ "$STATUS" = "success" ]; then
-            STATUS_TEXT="✅ Success"
-            COLOR=3066993   # green
+            COLOR=3066993
+            EMOJI="✅"
           else
-            STATUS_TEXT="❌ Failed"
-            COLOR=15158332  # red
+            COLOR=15158332
+            EMOJI="❌"
           fi
 
-          if [ "$EVENT_NAME" = "push" ]; then
-            TITLE="🚀 New Push"
-            MESSAGE="${{ github.event.head_commit.message }}"
-            URL="${{ github.event.head_commit.url }}"
-            EVENT_LABEL="Push"
-          else
-            ACTION="${{ github.event.action }}"
-            TITLE=" Pull Request • $ACTION"
-            MESSAGE="${{ github.event.pull_request.title }}"
-            URL="${{ github.event.pull_request.html_url }}"
-            EVENT_LABEL="Pull Request"
-          fi
-
+          # Construct the JSON using a Heredoc for better readability
           curl -H "Content-Type: application/json" \
-          -X POST \
-          -d "{
-            \"username\": \"GitHub Bot\",
-            \"avatar_url\": \"https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png\",
-            \"embeds\": [{
-              \"author\": {
-                \"name\": \"$ACTOR\",
-                \"icon_url\": \"$AVATAR_URL\",
-                \"url\": \"https://github.com/$ACTOR\"
+               -X POST \
+               -d @- <<EOF
+          {
+            "username": "GitHub",
+            "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+            "embeds": [{
+              "title": "$EMOJI Workflow $STATUS",
+              "url": "$URL",
+              "color": $COLOR,
+              "author": {
+                "name": "$AUTHOR",
+                "icon_url": "https://github.com/$AUTHOR.png"
               },
-              \"title\": \"$TITLE\",
-              \"url\": \"$URL\",
-              \"color\": $COLOR,
-              \"description\": \"**$EVENT_LABEL Event** in **$REPO**\",
-              \"fields\": [
-                { \"name\": \" Branch\", \"value\": \"`$BRANCH`\", \"inline\": true },
-                { \"name\": \" Status\", \"value\": \"$STATUS_TEXT\", \"inline\": true },
-                { \"name\": \" Message\", \"value\": \"$MESSAGE\", \"inline\": false }
+              "fields": [
+                { "name": "Repository", "value": "[$REPO](https://github.com/$REPO)", "inline": true },
+                { "name": "Branch", "value": "\`$BRANCH\`", "inline": true },
+                { "name": "Event", "value": "${{ github.event_name }}", "inline": true },
+                { "name": "Message", "value": "$MESSAGE", "inline": false }
               ],
-              \"timestamp\": \"$TIME_ISO\",
-              \"footer\": {
-                \"text\": \"GitHub Actions • Team Notifications\",
-                \"icon_url\": \"https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png\"
-              }
+              "timestamp": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')",
+              "footer": { "text": "GitHub Actions" }
             }]
-          }" \
-          $DISCORD_WEBHOOK
+          }
+          EOF
