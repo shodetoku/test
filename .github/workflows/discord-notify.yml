@@ -21,39 +21,28 @@ jobs:
           AVATAR_URL="https://github.com/${{ github.actor }}.png"
           REPO="${{ github.repository }}"
           BRANCH="${{ github.ref_name }}"
-          TIME="$(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+          TIME_ISO="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 
-          STATUS="success"
-          COLOR=3066993   # green
-          TITLE=""
-          MESSAGE=""
-          URL=""
-
-          if [ "$EVENT_NAME" = "push" ]; then
-            TITLE="Push Event"
-            MESSAGE="${{ github.event.head_commit.message }}"
-            URL="${{ github.event.head_commit.url }}"
-          else
-            # Pull Request event
-            PR_TITLE="${{ github.event.pull_request.title }}"
-            PR_URL="${{ github.event.pull_request.html_url }}"
-            ACTION="${{ github.event.action }}"
-
-            TITLE="Pull Request ($ACTION)"
-            MESSAGE="$PR_TITLE"
-            URL="$PR_URL"
-          fi
-
-          # If job fails, change status (this is future-proof if you add tests/builds later)
-          if [ "${{ job.status }}" != "success" ]; then
-            STATUS="failed"
-            COLOR=15158332   # red
-          fi
-
+          STATUS="${{ job.status }}"
           if [ "$STATUS" = "success" ]; then
             STATUS_TEXT="✅ Success"
+            COLOR=3066993   # green
           else
             STATUS_TEXT="❌ Failed"
+            COLOR=15158332  # red
+          fi
+
+          if [ "$EVENT_NAME" = "push" ]; then
+            TITLE="🚀 New Push"
+            MESSAGE="${{ github.event.head_commit.message }}"
+            URL="${{ github.event.head_commit.url }}"
+            EVENT_LABEL="Push"
+          else
+            ACTION="${{ github.event.action }}"
+            TITLE=" Pull Request • $ACTION"
+            MESSAGE="${{ github.event.pull_request.title }}"
+            URL="${{ github.event.pull_request.html_url }}"
+            EVENT_LABEL="Pull Request"
           fi
 
           curl -H "Content-Type: application/json" \
@@ -64,20 +53,22 @@ jobs:
             \"embeds\": [{
               \"author\": {
                 \"name\": \"$ACTOR\",
-                \"icon_url\": \"$AVATAR_URL\"
+                \"icon_url\": \"$AVATAR_URL\",
+                \"url\": \"https://github.com/$ACTOR\"
               },
               \"title\": \"$TITLE\",
               \"url\": \"$URL\",
               \"color\": $COLOR,
+              \"description\": \"**$EVENT_LABEL Event** in **$REPO**\",
               \"fields\": [
-                { \"name\": \"Repository\", \"value\": \"$REPO\", \"inline\": true },
-                { \"name\": \"Branch\", \"value\": \"$BRANCH\", \"inline\": true },
-                { \"name\": \"Message\", \"value\": \"$MESSAGE\", \"inline\": false },
-                { \"name\": \"Status\", \"value\": \"$STATUS_TEXT\", \"inline\": true },
-                { \"name\": \"Time\", \"value\": \"$TIME\", \"inline\": true }
+                { \"name\": \" Branch\", \"value\": \"`$BRANCH`\", \"inline\": true },
+                { \"name\": \" Status\", \"value\": \"$STATUS_TEXT\", \"inline\": true },
+                { \"name\": \" Message\", \"value\": \"$MESSAGE\", \"inline\": false }
               ],
+              \"timestamp\": \"$TIME_ISO\",
               \"footer\": {
-                \"text\": \"GitHub Actions → Discord\"
+                \"text\": \"GitHub Actions • Team Notifications\",
+                \"icon_url\": \"https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png\"
               }
             }]
           }" \
