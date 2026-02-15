@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { login } from '../utils/auth';
 import { saveToStorage, getFromStorage } from '../utils/storage';
 import '../styles/Login.css';
 
@@ -6,8 +7,8 @@ function Login({ onNavigate }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState('');
 
-// get the saved email from remember me
   useEffect(() => {
     const savedEmail = getFromStorage('rememberedEmail');
     if (savedEmail) {
@@ -18,16 +19,20 @@ function Login({ onNavigate }) {
 
   const handleLogin = (e) => {
     e.preventDefault();
+    setError('');
 
-    // i-save ang email kung naka-check ang remember me
-    if (rememberMe) {
-      saveToStorage('rememberedEmail', email);
+    const result = login(email, password);
+
+    if (result.success) {
+      if (rememberMe) {
+        saveToStorage('rememberedEmail', email);
+      } else {
+        saveToStorage('rememberedEmail', null);
+      }
+      onNavigate('home');
     } else {
-      saveToStorage('rememberedEmail', null);
+      setError(result.error || 'Login failed. Please try again.');
     }
-
-    // dito yung login logic (for now, alert lang)
-    alert(`Logging in with email: ${email}`);
   };
 
   return (
@@ -48,7 +53,7 @@ function Login({ onNavigate }) {
 
           <div className="doctor-image">
             <img
-              src="https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=600"
+              src="https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=800"
               alt="Doctor with phone"
             />
           </div>
@@ -57,6 +62,18 @@ function Login({ onNavigate }) {
         <div className="login-right">
           <div className="login-form-container">
             <h2>Login To Your Account</h2>
+
+            {error && (
+              <div className="error-message">
+                {error}
+              </div>
+            )}
+
+            <div className="demo-credentials">
+              <p><strong>Demo Credentials:</strong></p>
+              <p>Email: patient@example.com</p>
+              <p>Password: password123</p>
+            </div>
 
             <form onSubmit={handleLogin}>
               <div className="form-group">

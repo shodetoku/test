@@ -87,3 +87,138 @@
 .appointment-btn:hover {
   background-color: #059669;
 }
+
+.user-menu {
+  position: relative;
+}
+
+.user-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+  color: #374151;
+}
+
+.user-btn:hover {
+  background-color: #f0fdf4;
+  border-color: #10b981;
+}
+
+.user-icon {
+  font-size: 1.25rem;
+}
+
+.user-name {
+  font-size: 0.95rem;
+}
+
+.dropdown-arrow {
+  font-size: 0.7rem;
+  transition: transform 0.2s;
+}
+
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  min-width: 220px;
+  padding: 0.5rem;
+  z-index: 1000;
+  animation: dropdownFadeIn 0.2s ease-out;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #374151;
+  text-align: left;
+  transition: all 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f0fdf4;
+  color: #10b981;
+}
+
+.dropdown-item.logout {
+  color: #ef4444;
+}
+
+.dropdown-item.logout:hover {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+.dropdown-item span {
+  font-size: 1.125rem;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background-color: #e5e7eb;
+  margin: 0.5rem 0;
+}
+
+@media (max-width: 968px) {
+  .nav-links {
+    display: none;
+  }
+
+  .user-name {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .navbar {
+    padding: 1rem;
+  }
+
+  .nav-actions {
+    gap: 0.5rem;
+  }
+
+  .appointment-btn {
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .dropdown-menu {
+    right: auto;
+    left: 0;
+  }
+}
