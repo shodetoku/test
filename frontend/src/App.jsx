@@ -1,84 +1,113 @@
 import { useState } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import AppointmentModal from './components/AppointmentModal';
 import Home from './pages/Home';
-import AboutUs from './pages/AboutUs';
 import Services from './pages/Services';
 import Contact from './pages/Contact';
-import Login from './pages/Login';
-import ChangePassword from './pages/ChangePassword';
-import ForgotPassword from './pages/ForgotPassword';
 import IntakeForm from './pages/IntakeForm';
-import './styles/App.css';
+import Login from './pages/Login';
+import './index.css';
 
 function App() {
-  const navigate = useNavigate();
-  // currentPage para sa navigation
-  const [currentPage, setCurrentPage] = useState('home');
+  const [showModal, setShowModal] = useState(false);
+  const [currentView, setCurrentView] = useState('landing'); // landing, intake, login
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [intakeFormCompleted, setIntakeFormCompleted] = useState(false);
 
-  // show/hide ng intake form modal
-  const [showIntakeForm, setShowIntakeForm] = useState(false);
-
-  // function para mag-navigate between pages
-  const handleNavigate = (page) => {
-    if (page === 'intake-form') {
-      setShowIntakeForm(true);
-    } else {
-      setCurrentPage(page);
-      setShowIntakeForm(false);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      navigate('/'); // <-- ADD THIS LINE
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
-  // function para i-close ang intake form
-  const handleCloseIntakeForm = () => {
-    setShowIntakeForm(false);
+  const handleAppointmentClick = () => {
+    setCurrentView('intake');
   };
 
-  // render ng tamang page based sa currentPage
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'home':
-        return <Home onNavigate={handleNavigate} />;
-      case 'about-us':
-        return <AboutUs />;
-      case 'services':
-        return <Services />;
-      case 'contact':
-        return <Contact />;
-      case 'login':
-        return <Login onNavigate={handleNavigate} />;
-      case 'change-password':
-        return <ChangePassword onNavigate={handleNavigate} />;
-      case 'forgot-password':
-        return <ForgotPassword onNavigate={handleNavigate} />;
-      default:
-        return <Home onNavigate={handleNavigate} />;
+  const handleFirstTime = () => {
+    setShowModal(false);
+    setCurrentView('intake');
+  };
+
+  const handleReturning = () => {
+    setShowModal(false);
+    setCurrentView('login');
+  };
+
+  const handleIntakeFormComplete = () => {
+    // Mark intake form as completed
+    setIntakeFormCompleted(true);
+    setCurrentView('landing');
+    // Show success message
+    alert('Intake form submitted successfully! You can now book an appointment.');
+  };
+
+  const handleLoginSuccess = () => {
+    // Mark user as logged in
+    setIsLoggedIn(true);
+    setCurrentView('landing');
+    // Show success message
+    alert('Login successful! You can now book an appointment.');
+  };
+
+  const handleLoginNavigation = (page) => {
+    if (page === 'home') {
+      handleLoginSuccess();
     }
   };
 
+  const handleBackToHome = () => {
+    setCurrentView('landing');
+  };
+
+  // Show IntakeForm
+  if (currentView === 'intake') {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <Navbar onNavigate={handleBackToHome} onAppointmentClick={handleAppointmentClick} />
+        <main className="flex-1">
+          <IntakeForm onClose={handleIntakeFormComplete} />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Show Login
+  if (currentView === 'login') {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <Navbar onNavigate={handleBackToHome} onAppointmentClick={handleAppointmentClick} />
+        <main className="flex-1">
+          <Login onNavigate={handleLoginNavigation} />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Show Landing Page
   return (
-    <div className="app">
-      <Navbar currentPage={currentPage} onNavigate={handleNavigate} />
+    <div className="flex flex-col min-h-screen">
+      <Navbar onNavigate={scrollToSection} onAppointmentClick={handleAppointmentClick} />
 
-      <main className="main-content">
-        
-        <Routes>
-          {/* 1. The specific URL you want to type in the address bar */}
-          <Route path="/pages/changepassword" element={<ChangePassword onNavigate={handleNavigate} />} />
-          
-          {/* 2. THE FIX: The Wildcard Route (*) */}
-          {/* If the URL is anything else, React Router will safely fall back to your existing switch statement! */}
-          <Route path="*" element={renderPage()} />
-        </Routes>
-        
+      <main className="flex-1">
+        <section id="home" className="w-full">
+          <Home />
+        </section>
+
+        <section id="services" className="w-full">
+          <Services />
+        </section>
+
+        <section id="contact" className="w-full">
+          <Contact />
+        </section>
       </main>
 
       <Footer />
-
-      {showIntakeForm && <IntakeForm onClose={handleCloseIntakeForm} />}
     </div>
   );
 }

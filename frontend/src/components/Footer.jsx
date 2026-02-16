@@ -20,9 +20,9 @@ function Footer() {
           <h3>Quick Links</h3>
           <ul>
             <li><a href="#home">Home</a></li>
-            <li><a href="#appointment">Book Appointment</a></li>
-            <li><a href="#records">Patient Records</a></li>
-            <li><a href="#history">History</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#">Book Appointment</a></li>
           </ul>
         </div>
 

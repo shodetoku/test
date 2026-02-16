@@ -101,26 +101,6 @@ function Home({ onNavigate }) {
             </div>
           </div>
         </div>
-
-        <div className="action-section">
-          <h2>Are you a first timer patient?</h2>
-          <div className="action-buttons">
-            <button
-              className="btn-primary"
-              onClick={() => onNavigate('intake-form')}
-            >
-              Yes, I'm New
-              <div className="btn-subtitle">Start your Digital Intake Form</div>
-            </button>
-            <button
-              className="btn-secondary"
-              onClick={() => onNavigate('login')}
-            >
-              No, I'm Returning
-              <div className="btn-subtitle">Log in or find your records</div>
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );

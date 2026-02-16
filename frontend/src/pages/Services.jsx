@@ -1,31 +1,6 @@
-import { useState } from 'react';
 import '../styles/Services.css';
 
 function Services() {
-  const [selectedDepartment, setSelectedDepartment] = useState('');
-  const [selectedDoctor, setSelectedDoctor] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const departments = [
-    'General Medicine',
-    'Pediatrics',
-    'Cardiology',
-    'Dermatology',
-    'Orthopedics',
-    'Neurology',
-  ];
-
-  const doctors = [
-    { name: 'Dr. Sarah Johnson', specialty: 'General Medicine', available: 'Mon - Fri' },
-    { name: 'Dr. Michael Chen', specialty: 'Cardiology', available: 'Tue - Sat' },
-    { name: 'Dr. Emily Rodriguez', specialty: 'Pediatrics', available: 'Mon - Wed' },
-    { name: 'Dr. James Wilson', specialty: 'Orthopedics', available: 'Wed - Fri' },
-  ];
-
-  const filteredDoctors = doctors.filter(doctor =>
-    doctor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    doctor.specialty.toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   return (
     <div className="services-page">
@@ -69,61 +44,6 @@ function Services() {
               <li>Integration with payment and insurance systems</li>
               <li>24/7 customer support and assistance</li>
             </ul>
-          </div>
-        </section>
-
-        <section className="appointment-booking-section">
-          <h2>Book an Appointment</h2>
-          <div className="booking-container">
-            <div className="booking-form">
-              <div className="form-group">
-                <label>Select Department</label>
-                <select
-                  value={selectedDepartment}
-                  onChange={(e) => setSelectedDepartment(e.target.value)}
-                >
-                  <option value="">Choose a department</option>
-                  {departments.map((dept) => (
-                    <option key={dept} value={dept}>
-                      {dept}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label>Search for Doctors</label>
-                <input
-                  type="text"
-                  placeholder="Search by name or specialty..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-
-              <button className="btn-book-appointment">
-                Book Appointment
-              </button>
-            </div>
-
-            <div className="doctors-list">
-              <h3>Available Doctors</h3>
-              {filteredDoctors.length > 0 ? (
-                filteredDoctors.map((doctor, index) => (
-                  <div key={index} className="doctor-card">
-                    <div className="doctor-avatar">👨‍⚕️</div>
-                    <div className="doctor-info">
-                      <h4>{doctor.name}</h4>
-                      <p className="doctor-specialty">{doctor.specialty}</p>
-                      <p className="doctor-available">Available: {doctor.available}</p>
-                    </div>
-                    <button className="btn-select-doctor">Select</button>
-                  </div>
-                ))
-              ) : (
-                <p className="no-results">No doctors found matching your search.</p>
-              )}
-            </div>
           </div>
         </section>
 
