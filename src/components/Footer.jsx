@@ -1,6 +1,7 @@
-import '../styles/Footer.css';
+import '../assets/styles/Footer.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faPhone, faEnvelope, faClock } from '@fortawesome/free-solid-svg-icons';
+import logoPrimary from '../assets/images/logo-primary.png';
 
 function Footer() {
   return (
@@ -11,7 +12,7 @@ function Footer() {
         <div className="footer-section">
           <div className="footer-logo">
             <img 
-              src="/1000234544.png" 
+              src={logoPrimary}
               alt="Zeal Community Medical Mission Foundation" 
               className="footer-logo-image" 
             />

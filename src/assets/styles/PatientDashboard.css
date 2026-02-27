@@ -1,0 +1,522 @@
+.dashboard-page {
+  display: grid;
+  gap: 1rem;
+}
+
+.dashboard-headline h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.dashboard-headline p {
+  margin: 0.25rem 0 0;
+  color: #475569;
+}
+
+.summary-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.summary-card {
+  width: 100%;
+  min-height: 120px;
+  border: 0;
+  border-radius: 12px;
+  padding: 0.875rem;
+  text-align: left;
+  display: grid;
+  gap: 0.3rem;
+  color: #082f49;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  background-color: #ffffff;
+}
+
+.summary-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+.summary-actions button {
+  min-height: 44px;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.2);
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.summary-card.primary { background: #dbeafe; }
+.summary-card.warning { background: #fee2e2; color: #7f1d1d; }
+.summary-card.success { background: #dcfce7; color: #14532d; }
+
+.summary-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+}
+
+.summary-meta {
+  font-size: 0.87rem;
+}
+
+.journey-panel,
+.dashboard-panel {
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  border-radius: 12px;
+  padding: 0.875rem;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.panel-header button {
+  min-height: 44px;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  background: #f0f9ff;
+  color: #0c4a6e;
+  padding: 0 0.75rem;
+}
+
+.journey-stepper {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.journey-stepper.horizontal {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+
+.journey-step {
+  min-height: 44px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0.5rem 0.625rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #475569;
+  background: #f8fafc;
+}
+
+.journey-step.completed {
+  border-color: #22c55e;
+  background: #ecfdf3;
+  color: #166534;
+}
+
+.journey-step.current {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.journey-step.upcoming {
+  border-color: #e2e8f0;
+  background: #f8fafc;
+  color: #94a3b8;
+}
+
+.step-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  display: inline-grid;
+  place-items: center;
+  background: #e2e8f0;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.journey-step.active .step-dot {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.dashboard-columns {
+  display: grid;
+  gap: 0.875rem;
+}
+
+.timeline-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.timeline-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.timeline-date {
+  font-size: 0.78rem;
+  color: #0369a1;
+  font-weight: 700;
+}
+
+.timeline-pill {
+  padding: 0.18rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.timeline-pill.pill-lab {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.timeline-pill.pill-consultation {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.timeline-pill.pill-billing {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.timeline-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #eff6ff;
+  color: #1d4ed8;
+  flex-shrink: 0;
+}
+
+.timeline-list,
+.consultation-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.625rem;
+}
+
+.timeline-list li,
+.consultation-list li {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0.625rem;
+  background-color: #ffffff;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.timeline-list span {
+  font-size: 0.78rem;
+  color: #0369a1;
+  font-weight: 700;
+}
+
+.timeline-list p,
+.consultation-list p {
+  margin: 0.3rem 0 0;
+  color: #334155;
+}
+
+.consultation-list strong {
+  color: #0f172a;
+}
+
+.consultation-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.consultation-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.dashboard-empty {
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.dashboard-empty button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 10px;
+  background: #015396;
+  color: #ffffff;
+  padding: 0 0.875rem;
+}
+
+.next-appointment-card {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.next-appointment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.next-appointment-primary {
+  font-size: 1.05rem;
+}
+
+.next-appointment-meta {
+  display: block;
+}
+
+.next-appointment-mode {
+  padding: 0.18rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.next-appointment-mode.mode-virtual {
+  background: rgba(59, 130, 246, 0.18);
+  color: #1d4ed8;
+}
+
+.next-appointment-mode.mode-inperson {
+  background: rgba(16, 185, 129, 0.16);
+  color: #047857;
+}
+
+.next-appointment-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.35rem;
+}
+
+.next-appointment-status {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.next-appointment-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.18rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.next-appointment-badge.badge-confirmed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.next-appointment-badge.badge-soon {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.next-appointment-badge.badge-muted {
+  background: #e5e7eb;
+  color: #4b5563;
+}
+
+.next-appointment-reschedule {
+  border: 0;
+  background: transparent;
+  color: #0c4a6e;
+  padding: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.next-appointment-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.next-appointment-cta {
+  min-height: 40px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 0.9rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.next-appointment-cta .cta-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.next-appointment-cta.cta-primary {
+  border: 0;
+  background-image: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.35);
+}
+
+.next-appointment-cta.cta-outline {
+  border: 1px solid rgba(15, 23, 42, 0.16);
+  background: rgba(255, 255, 255, 0.96);
+  color: #0f172a;
+}
+
+.bp-sparkline {
+  width: 100%;
+  margin-top: 0.35rem;
+}
+
+.meeting-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 120;
+}
+
+.meeting-modal {
+  width: min(420px, 100%);
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #dbeafe;
+  box-shadow: 0 22px 45px rgba(15, 23, 42, 0.35);
+}
+
+.meeting-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.meeting-modal-header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.meeting-close-btn {
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.meeting-modal-body {
+  padding: 0.9rem 1rem 1rem;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.meeting-meta {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.6rem 0.7rem;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.meeting-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+}
+
+.meeting-value {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.meeting-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+.meeting-primary-btn,
+.meeting-secondary-btn {
+  flex: 1;
+  min-height: 40px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.meeting-primary-btn {
+  border: 0;
+  background-image: linear-gradient(135deg, #16a34a, #22c55e);
+  color: #ffffff;
+}
+
+.meeting-secondary-btn {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+}
+
+@media (min-width: 900px) {
+  .summary-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .dashboard-columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

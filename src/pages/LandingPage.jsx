@@ -1,25 +1,25 @@
-import { useNavigation } from '../context/NavigationContext';
-import Home from './Home';
-import AboutUs from './AboutUs';
-import Services from './Services';
-import Contact from './Contact';
+import { useAppNavigation } from '../context/AppNavigationContext';
+import HeroSection from '../components/HeroSection';
+import AboutSection from '../components/AboutSection';
+import ServicesSection from '../components/ServicesSection';
+import ContactSection from '../components/ContactSection';
 
 function LandingPage() {
-  const { handleNavigate } = useNavigation();
+  const { handleNavigate } = useAppNavigation();
 
   return (
     <>
       <section id="home">
-        <Home onNavigate={handleNavigate} />
+        <HeroSection onNavigate={handleNavigate} />
       </section>
       <section id="about">
-        <AboutUs />
+        <AboutSection />
       </section>
       <section id="services">
-        <Services />
+        <ServicesSection />
       </section>
       <section id="contact">
-        <Contact />
+        <ContactSection />
       </section>
     </>
   );

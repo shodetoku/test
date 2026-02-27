@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
-import { isAuthenticated, getCurrentUser, logout } from '../utils/auth';
-import '../styles/Navbar.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { isAuthenticated, getCurrentUser, logout } from '../services/AuthService';
+import logoPrimary from '../assets/images/logo-primary.png';
+import '../assets/styles/Navbar.css';
 
 function Navbar({ currentPage, onNavigate }) {
   const [authenticated, setAuthenticated] = useState(false);
@@ -31,7 +34,7 @@ function Navbar({ currentPage, onNavigate }) {
     <nav className="navbar">
       <div className="navbar-container">
         <div className="logo" onClick={() => navigate('home')} style={{ cursor: 'pointer' }}>
-          <img src="/1000234544.png" alt="Zeal Community Medical Mission Foundation" className="logo-image" />
+          <img src={logoPrimary} alt="Zeal Community Medical Mission Foundation" className="logo-image" />
           <div className="flex flex-col">
             <span className="logo-text">ZCMMF</span>
             <span className="logo-subtitle">Zeal Community Medical Mission Foundation</span>
@@ -62,7 +65,7 @@ function Navbar({ currentPage, onNavigate }) {
                     <button className="dropdown-item" onClick={() => { setShowDropdown(false); navigate('medical-records'); }}>📋 Medical Records</button>
                     <button className="dropdown-item" onClick={() => { setShowDropdown(false); navigate('prescriptions'); }}>💊 Prescriptions</button>
                     <button className="dropdown-item" onClick={() => { setShowDropdown(false); navigate('billing'); }}>💳 Billing</button>
-                    <button className="dropdown-item" onClick={() => { setShowDropdown(false); navigate('profile-settings'); }}>⚙️ Settings</button>
+                    <button className="dropdown-item" onClick={() => { setShowDropdown(false); navigate('my-account'); }}>⚙️ My Account</button>
                     <div className="dropdown-divider" />
                     <button className="dropdown-item logout" onClick={handleLogout}>🚪 Logout</button>
                   </div>
@@ -74,7 +77,7 @@ function Navbar({ currentPage, onNavigate }) {
           ) : (
             <>
               <button className={`profile-btn ${activeKey === 'login' ? 'active' : ''}`} onClick={() => navigate('login')}>
-                <span>👤</span>
+                <span><FontAwesomeIcon icon={faUser} /></span>
                 <span style={{ marginLeft: 6 }}>Login</span>
               </button>
               <button className={`appointment-btn ${activeKey === 'intake' ? 'active' : ''}`} onClick={() => navigate('intake')}>Make Appointment</button>

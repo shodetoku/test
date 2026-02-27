@@ -1,4 +1,4 @@
-import '../styles/AppointmentModal.css';
+import '../assets/styles/AppointmentModal.css';
 
 function AppointmentModal({ isOpen, onClose, onFirstTime, onReturning }) {
   if (!isOpen) return null;

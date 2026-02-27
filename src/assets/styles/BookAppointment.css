@@ -1,0 +1,171 @@
+.booking-overlay-page {
+  min-height: calc(100vh - 140px);
+  display: grid;
+  place-items: center;
+}
+
+.booking-overlay-card {
+  width: min(900px, 100%);
+  background: #ffffff;
+  border: 1px solid #bfdbfe;
+  border-radius: 12px;
+  padding: 1rem;
+  display: grid;
+  gap: 0.875rem;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+}
+
+.booking-overlay-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.booking-overlay-head h1 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.booking-overlay-head p {
+  margin: 0.3rem 0 0;
+  color: #475569;
+}
+
+.close-overlay-btn,
+.booking-actions button,
+.select-card,
+.timeslot,
+.booking-confirmed button {
+  min-height: 44px;
+}
+
+.close-overlay-btn {
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #f8fafc;
+  padding: 0 0.75rem;
+}
+
+.booking-stepper {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.booking-stepper span {
+  min-height: 44px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  padding: 0 0.75rem;
+  color: #64748b;
+}
+
+.booking-stepper span.active {
+  background: #dbeafe;
+  border-color: #93c5fd;
+  color: #0c4a6e;
+  font-weight: 700;
+}
+
+.booking-step-content {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.booking-step-content h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.booking-grid {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.select-card {
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: #f8fafc;
+  padding: 0.625rem;
+  text-align: left;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.select-card.selected {
+  border-color: #60a5fa;
+  background: #eff6ff;
+}
+
+.booking-step-content input {
+  min-height: 44px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0 0.75rem;
+}
+
+.timeslots {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.timeslot {
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.timeslot.selected {
+  border-color: #60a5fa;
+  background: #dbeafe;
+}
+
+.booking-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.booking-actions button,
+.booking-confirmed button {
+  border: 0;
+  border-radius: 10px;
+  background: #015396;
+  color: #ffffff;
+  padding: 0 0.875rem;
+}
+
+.booking-actions button:disabled {
+  opacity: 0.5;
+}
+
+.booking-confirmed {
+  border: 1px solid #86efac;
+  background: #f0fdf4;
+  border-radius: 12px;
+  padding: 0.875rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.booking-confirmed h2,
+.booking-confirmed p {
+  margin: 0;
+}
+
+@media (min-width: 780px) {
+  .booking-stepper {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .booking-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .timeslots {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
